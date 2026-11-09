@@ -1,11 +1,4 @@
 @echo off
-title Servidor EcoContainer Piracaia
-echo ======================================================
-echo    Iniciando Servidor EcoContainer Piracaia...
-echo ======================================================
-echo.
-echo Para parar o servidor a qualquer momento, aperte Ctrl + C.
-echo.
-node server.js
+cd /d "%~dp0"
+node scripts/start-local.mjs
 pause
-

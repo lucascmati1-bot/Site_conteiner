@@ -1,0 +1,12 @@
+.booking-scroll-region{max-width:1280px;margin:0 auto;position:relative;display:flow-root}
+.booking-main-content{min-width:0}
+.booking-sticky-sidebar{min-width:0;padding:0 16px 40px}
+@media(min-width:1200px){
+ .booking-scroll-region{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:32px;padding:0 24px;align-items:start;overflow:clip}
+ .booking-sticky-sidebar{align-self:stretch;position:relative;padding:32px 0;min-height:0}
+ .booking-sticky-frame{position:sticky;top:96px;max-height:calc(100dvh - 120px);overflow:hidden;border-radius:24px}
+ .booking-summary-scroll{box-sizing:border-box;max-height:calc(100dvh - 120px);overflow-y:auto;scrollbar-width:thin;overscroll-behavior-y:contain;padding-bottom:2px}
+ .booking-main-content #sobre-espaco,.booking-main-content #vantagens,.booking-main-content #reservar{padding-top:40px;padding-bottom:40px}
+ .booking-main-content #vantagens .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .booking-main-content #reservar .mb-16{margin-bottom:32px}
+}

@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoContainer Piracaia | Hospedagem Sustentável & Reserva Direta</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Viva uma experiência única na Casa Contêiner em Piracaia/SP. Deck com ofurô, isolamento termoacústico, vista panorâmica e reserva direta sem taxas de aplicativos.">
+    <meta name="keywords" content="casa conteiner piracaia, chale piracaia represa, hospedagem piracaia, aluguel temporada piracaia, glamping serra da mantiqueira">
+    <meta property="og:title" content="EcoContainer Piracaia - Refúgio Sustentável com Vista Panorâmica">
+    <meta property="og:description" content="Reserve direto e economize até 9,9% em taxas. Conheça nosso tour 3D e o calendário de eventos de Piracaia.">
+    <meta property="og:type" content="website">
+
+    <!-- Schema.org para Google Meu Negócio / Local SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LodgingBusiness",
+      "name": "EcoContainer Piracaia",
+      "description": "Casa contêiner sustentável de alto padrão com ofurô e vista panorâmica para a Serra da Mantiqueira e Represa.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Piracaia",
+        "addressRegion": "SP",
+        "addressCountry": "BR"
+      },
+      "priceRange": "$$$",
+      "amenityFeature": [
+        {"@type": "LocationFeatureSpecification", "name": "Ar Condicionado Inverter Quente e Frio", "value": true},
+        {"@type": "LocationFeatureSpecification", "name": "Deck Panorâmico com Ofurô", "value": true},
+        {"@type": "LocationFeatureSpecification", "name": "Isolamento Termoacústico Naval", "value": true},
+        {"@type": "LocationFeatureSpecification", "name": "Wi-Fi Fibra Óptica", "value": true}
+      ]
+    }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: {
+                            50: '#f2f7f4',
+                            100: '#e1ede6',
+                            600: '#2d6a4f',
+                            700: '#1b4332',
+                            800: '#081c15',
+                            900: '#040d0a'
+                        },
+                        amberWood: '#c99a5b',
+                        warmSand: '#fbf9f5'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts & Lucide Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Three.js e OrbitControls para o visualizador 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        #threejs-canvas canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+            outline: none;
+        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1ede6; }
+        ::-webkit-scrollbar-thumb { background: #c5bba8; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9f947f; }
+        .cam-preset-btn.active {
+            background-color: #2d6a4f !important;
+            color: #ffffff !important;
+            border-color: #52b788 !important;
+            box-shadow: 0 0 12px rgba(82, 183, 136, 0.35);
+        }
+        .event-filter-btn.active {
+            background-color: #059669 !important;
+            color: #ffffff !important;
+        }
+    </style>
+<style>#test-pricing-summary > div:not(:last-child){display:none!important}</style>
+<link rel="stylesheet" href="/css/photo-tour.css">
+<link rel="stylesheet" href="/css/guest-picker.css">
+<link rel="stylesheet" href="/css/booking-layout.css">
+</head>
+<body class="bg-warmSand text-stone-800 antialiased font-sans">
+
+    <!-- Top Notice: Vantagem da Reserva Direta -->
+    <div class="bg-forest-800 text-white text-xs sm:text-sm py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>🔥 <strong>Tarifa Direta com o Proprietário:</strong> Garanta até 9,9% de economia sem as taxas de serviço de aplicativos.</span>
+        <a href="#reservar" class="underline hover:text-emerald-300 ml-1">Calcular Diária &rarr;</a>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-warmSand/90 backdrop-blur-md border-b border-stone-200/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-forest-700 text-amberWood flex items-center justify-center font-serif text-2xl font-bold shadow-md">
+                    P
+                </div>
+                <div>
+                    <span class="block font-serif font-bold text-xl text-forest-800 tracking-tight">EcoContainer</span>
+                    <span class="block text-xs uppercase tracking-wider text-amberWood font-semibold">Piracaia • SP</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-medium text-stone-600 text-sm">
+                <a href="#experiencia3d" class="hover:text-forest-700 transition">Visualizador 3D</a>
+                <a href="#sobre-espaco" class="hover:text-forest-700 transition">A Casa Contêiner</a>
+                <a href="#piracaia" class="hover:text-forest-700 transition">Piracaia & Eventos</a>
+                <a href="#reservar" class="hover:text-forest-700 transition">Simulador de Economia</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="#reservar" class="bg-forest-700 hover:bg-forest-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                    <i data-lucide="calendar-check" class="w-4 h-4 text-emerald-300"></i>
+                    <span>Ver Disponibilidade</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 text-forest-700 text-xs font-semibold tracking-wide border border-emerald-200">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
+                        Glamping de Luxo & Natureza Preservada
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl xl:text-6xl font-serif font-bold text-forest-900 leading-[1.15]">
+                        O aconchego de uma casa contêiner no coração de <span class="italic text-forest-600 underline decoration-amberWood/60 decoration-wavy">Piracaia</span>.
+                    </h1>
+
+                    <p class="text-stone-600 text-lg leading-relaxed max-w-xl">
+                        Desfrute de uma experiência sustentável e sofisticada com vista para as montanhas e represa. Isolamento termoacústico naval premium e noites estreladas na represa.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="#experiencia3d" class="bg-forest-700 hover:bg-forest-600 text-white px-6 py-3.5 rounded-2xl font-semibold shadow-md flex items-center gap-2.5 transition">
+                            <i data-lucide="box" class="w-5 h-5 text-amberWood"></i>
+                            <span>Explorar Tour 3D Interativo</span>
+                        </a>
+                        <a href="#piracaia" class="border border-stone-300 hover:border-forest-700 bg-white/80 hover:bg-white text-stone-700 px-6 py-3.5 rounded-2xl font-semibold transition flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-rose-500"></i>
+                            <span>Guia de Piracaia</span>
+                        </a>
+                    </div>
+
+                    <!-- Mini Badges de Segurança e Destaques -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-stone-200/80">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-medium text-stone-600">Sem taxas de terceiros</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
+                                <i data-lucide="thermometer-snowflake" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-medium text-stone-600">Climatizado & Silencioso</span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center">
+                                <i data-lucide="waves" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-xs font-medium text-stone-600">Perto da Represa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Destaque / Foto Panorâmica com Selo -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-stone-900 group">
+                        <img src="https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=1000&q=80" 
+                             alt="Casa Container em meio à natureza com deck de madeira" 
+                             class="w-full h-[460px] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                        <!-- Pill de Localização -->
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-semibold text-stone-800 flex items-center gap-1.5 shadow">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-rose-500"></i>
+                            Piracaia, São Paulo
+                        </div>
+
+                        <!-- Card de Comparação Flutuante -->
+                        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/40">
+                            <div class="flex items-center justify-between text-xs mb-1 text-stone-500">
+                                <span>Diária Média</span>
+                                <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">Direto com Dono</span>
+                            </div>
+                            <div class="flex items-baseline justify-between">
+                                <div>
+                                    <span class="text-2xl font-bold text-forest-900">R$ 600</span>
+                                    <span class="text-xs text-stone-500">/noite</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs line-through text-stone-400">R$ 666 no Airbnb</span>
+                                    <span class="block text-xs font-bold text-emerald-600">Economize até R$ 66/diária</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 1: VISUALIZADOR 3D INTERATIVO -->
+    <section id="experiencia3d" class="py-20 bg-stone-900 text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-amberWood uppercase tracking-widest text-xs font-bold flex items-center justify-center gap-1.5 mb-2">
+                    <i data-lucide="box" class="w-4 h-4"></i> Tour Virtual Arquitetônico
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold tracking-tight">
+                    Explore a Casa Contêiner em 3D
+                </h2>
+                <p class="text-stone-400 text-sm sm:text-base mt-3">
+                    Modelo aproximado construído a partir das fotos da residência: varanda com redes, área gourmet envidraçada, piscina e fogueira. Gire, aproxime ou retire o telhado para explorar. Medidas e divisões internas são estimadas.
+                </p>
+
+                <!-- Alternador entre Modelo 3D e Fotos Reais -->
+                <div class="flex items-center justify-center gap-2 mt-6">
+                    <button id="view-mode-3d-btn" class="bg-forest-600 text-white px-5 py-2 rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 active">
+                        <i data-lucide="box" class="w-4 h-4 text-amberWood"></i>
+                        <span>Modelo 3D Interativo</span>
+                    </button>
+                    <button id="view-mode-photos-btn" class="bg-stone-800 hover:bg-stone-700 text-stone-300 px-5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                        <i data-lucide="image" class="w-4 h-4 text-emerald-400"></i>
+                        <span>Fotos da residência</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 1. Galeria de Fotos Reais (Alternável) -->
+            <div id="photo-gallery-container" class="hidden" aria-label="Fotos da residência por ambiente"><noscript>Ative o JavaScript para abrir os álbuns de fotos.</noscript></div>
+
+            <!-- 2. Container do Canvas 3D -->
+            <div class="relative bg-stone-950 rounded-3xl overflow-hidden border border-stone-800 shadow-2xl h-[520px] sm:h-[600px]" id="canvas-container">
+                <!-- Three.js Canvas Injetado Aqui -->
+                <div id="threejs-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+
+                <!-- Painel de Controles 3D Superior -->
+                <div class="absolute top-4 left-4 right-4 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
+                    <div class="pointer-events-auto flex items-center gap-2 bg-stone-900/80 backdrop-blur-md px-3.5 py-2 rounded-xl border border-stone-700/60 text-xs">
+                        <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                            <i data-lucide="mouse-pointer" class="w-3.5 h-3.5"></i> Arraste para girar
+                        </span>
+                        <span class="text-stone-500">|</span>
+                        <span class="text-stone-400">Scroll / Pinça para zoom</span>
+                    </div>
+
+                    <!-- Botão de Iluminação Dia/Noite -->
+                    <div class="pointer-events-auto flex items-center gap-2">
+                        <button id="toggle-light-btn" class="bg-stone-900/90 hover:bg-stone-800 text-stone-200 px-3.5 py-2 rounded-xl border border-stone-700 text-xs font-medium flex items-center gap-1.5 transition">
+                            <i data-lucide="moon" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span id="light-mode-text">Ver à noite</span>
+                        </button>
+                        <button id="reset-cam-btn" class="bg-stone-900/90 hover:bg-stone-800 text-stone-200 p-2 rounded-xl border border-stone-700 text-xs transition" title="Resetar Posição">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Botões de Câmera / Presets Inferiores -->
+                <div class="absolute bottom-4 left-4 right-4 flex flex-wrap items-center justify-center gap-2 pointer-events-auto">
+                    <button class="cam-preset-btn bg-stone-900/85 hover:bg-forest-700 text-stone-200 px-3.5 py-1.5 rounded-lg border border-stone-700/70 text-xs font-medium transition active" data-preset="geral">
+                        🔭 Vista Panorâmica
+                    </button>
+                    <button class="cam-preset-btn bg-stone-900/85 hover:bg-forest-700 text-stone-200 px-3.5 py-1.5 rounded-lg border border-stone-700/70 text-xs font-medium transition" data-preset="deck">
+                        🏊 Piscina & Jardim
+                    </button>
+                    <button class="cam-preset-btn bg-stone-900/85 hover:bg-forest-700 text-stone-200 px-3.5 py-1.5 rounded-lg border border-stone-700/70 text-xs font-medium transition" data-preset="quarto">
+                        🛏️ Ambientes internos
+                    </button>
+                    <button class="cam-preset-btn bg-stone-900/85 hover:bg-forest-700 text-stone-200 px-3.5 py-1.5 rounded-lg border border-stone-700/70 text-xs font-medium transition" data-preset="topo">
+                        📐 Vista superior
+                    </button>
+                    <button class="cam-preset-btn bg-stone-900/85 text-stone-200 px-3 py-1.5 rounded-lg border border-stone-700/70 text-xs" data-preset="gourmet">🍽️ Área gourmet</button>
+                    <button id="toggle-roof-btn" aria-pressed="false" class="bg-stone-900/85 text-stone-200 px-3 py-1.5 rounded-lg border border-stone-700/70 text-xs">Ver sem telhado</button>
+                </div>
+
+                <!-- Info Box Flutuante do 3D -->
+                <div id="hotspot-info-box" class="absolute bottom-16 sm:bottom-4 left-4 max-w-xs bg-forest-900/90 backdrop-blur-md p-4 rounded-2xl border border-forest-600/50 shadow-xl hidden transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                        <h4 id="hotspot-title" class="font-bold text-amberWood text-sm"></h4>
+                        <button id="close-hotspot-btn" class="text-stone-400 hover:text-white text-xs">&times;</button>
+                    </div>
+                    <p id="hotspot-desc" class="text-stone-300 text-xs leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<div class="booking-scroll-region"><div class="booking-main-content">
+<section id="sobre-espaco" class="py-16 sm:py-20 bg-white scroll-mt-24" aria-labelledby="sobre-espaco-titulo"><div class="max-w-4xl mx-auto px-6"><span class="text-xs font-bold tracking-widest uppercase text-forest-700">Seu refúgio na natureza</span><h2 id="sobre-espaco-titulo" class="font-serif text-3xl sm:text-4xl text-forest-900 mt-3 mb-6">Sobre este espaço</h2><p class="text-stone-600 text-base sm:text-lg leading-relaxed">Desacelere e viva momentos inesquecíveis em um refúgio cercado pela natureza, com acesso à represa. Nossa Casa Container une conforto, charme e tranquilidade para casais, famílias e amigos. Aproveite a piscina, a área gourmet com churrasqueira e fogão a lenha, contemple o pôr do sol e, à noite, reúna-se ao redor da lareira de jardim para um bom vinho ou marshmallows sob um céu estrelado. Mais que uma hospedagem, uma experiência para renovar as energias.</p><div class="mt-8 divide-y divide-stone-200 border-y border-stone-200"><details class="group py-5"><summary class="flex items-center justify-between gap-4 cursor-pointer list-none text-lg font-semibold text-forest-900"><span>O espaço</span><span aria-hidden="true" class="text-xl transition-transform group-open:rotate-180">⌄</span></summary><div class="pt-4 space-y-4 text-stone-600 leading-relaxed"><p>Nossa Casa Container foi projetada para proporcionar conforto, praticidade e momentos especiais em contato com a natureza.</p><p>A área social integra sala, cozinha e varanda em um ambiente acolhedor, perfeito para reunir a família e os amigos. A cozinha é completa e funcional, ideal para preparar desde um café da manhã tranquilo até um jantar especial no fogão a lenha ou na churrasqueira da área gourmet.</p><p>Os dois quartos foram preparados para oferecer noites de descanso com conforto e tranquilidade, enquanto os dois banheiros garantem praticidade durante toda a estadia.</p><p>Na área externa, a experiência é o grande diferencial. Aproveite a piscina para relaxar nos dias ensolarados, o balanço para contemplar a paisagem, o acesso à represa para estar ainda mais próximo da natureza e a lareira de jardim para encerrar o dia com um bom vinho, marshmallows na fogueira e conversas sob um céu repleto de estrelas.</p><p>Cada espaço foi pensado para que você desacelere, aproveite o momento e leve para casa lembranças inesquecíveis.</p></div></details><details class="group py-5"><summary class="flex items-center justify-between gap-4 cursor-pointer list-none text-lg font-semibold text-forest-900"><span>Acesso do hóspede</span><span aria-hidden="true" class="text-xl transition-transform group-open:rotate-180">⌄</span></summary><div class="pt-4 space-y-4 text-stone-600 leading-relaxed"><p>Durante a estadia, os hóspedes terão acesso exclusivo a toda a propriedade, garantindo total privacidade e conforto. Estão disponíveis a Casa Container completa, com sala integrada à cozinha, dois quartos, dois banheiros e varanda, além da área gourmet equipada com churrasqueira e fogão a lenha. Também poderão aproveitar a piscina privativa, a lareira de jardim, o balanço, o amplo gramado e o acesso à represa, desfrutando de um ambiente tranquilo e cercado pela natureza, ideal para descansar e criar momentos inesquecíveis.</p></div></details><details class="group py-5"><summary class="flex items-center justify-between gap-4 cursor-pointer list-none text-lg font-semibold text-forest-900"><span>Outras observações</span><span aria-hidden="true" class="text-xl transition-transform group-open:rotate-180">⌄</span></summary><div class="pt-4 space-y-4 text-stone-600 leading-relaxed"><p>Queremos que você se sinta em casa desde o momento da sua chegada. Toda a propriedade é de uso exclusivo dos hóspedes, proporcionando privacidade, conforto e tranquilidade em meio à natureza.</p><p>Durante sua estadia, estarei disponível pelo chat da plataforma para oferecer todo o suporte necessário, esclarecer dúvidas e compartilhar dicas sobre a região.</p><p>Aqui você poderá desfrutar da piscina privativa, área gourmet com churrasqueira e fogão a lenha, lareira de jardim, amplo gramado e acesso à represa, em um ambiente pensado para relaxar, celebrar bons momentos e criar memórias inesquecíveis.</p><p>Por estar localizada em uma área cercada pela natureza, é comum encontrar pássaros, borboletas e outros elementos típicos do ambiente rural, tornando a experiência ainda mais autêntica e especial.</p><p>Esperamos que sua estadia seja marcada por conforto, tranquilidade e momentos únicos. Seja muito bem-vindo ao seu refúgio na natureza!</p></div></details></div></div></section>
+
+    <!-- SEÇÃO 2: QUEBRA DE OBJEÇÕES - POR QUE ESCOLHER UMA CASA CONTÊINER? -->
+    <section id="vantagens" class="py-20 bg-warmSand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-forest-600 uppercase tracking-widest text-xs font-bold">Inovação & Sustentabilidade</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-forest-900 mt-2">
+                    Por que se hospedar em uma Casa Contêiner?
+                </h2>
+                <p class="text-stone-600 text-sm sm:text-base mt-3">
+                    A união entre a engenharia moderna e o conforto hoteleiro de alto padrão. Esqueça mitos: aqui você tem o melhor dos dois mundos.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Card 1: Isolamento Térmico -->
+                <div class="bg-white rounded-2xl p-7 border border-stone-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center mb-5">
+                        <i data-lucide="thermometer" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-forest-900 text-lg mb-2">Conforto Térmico Total</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Paredes duplas tratadas com <strong>lã de rocha de alta densidade</strong> e ar-condicionado quente/frio. Fresquinho nos verões da serra e aconchegante no inverno.
+                    </p>
+                </div>
+
+                <!-- Card 2: Isolamento Acústico -->
+                <div class="bg-white rounded-2xl p-7 border border-stone-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-5">
+                        <i data-lucide="volume-x" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-forest-900 text-lg mb-2">Silêncio e Paz</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Vedação especial e vidros temperados. A chuva no telhado vira um som suave para relaxar, sem o barulho metálico que muitos imaginam.
+                    </p>
+                </div>
+
+                <!-- Card 3: Sustentabilidade -->
+                <div class="bg-white rounded-2xl p-7 border border-stone-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center mb-5">
+                        <i data-lucide="leaf" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-forest-900 text-lg mb-2">Arquitetura Sustentável</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Reaproveitamento de estrutura marítima naval, minimizando o impacto ambiental no solo de Piracaia e reduzindo o consumo de cimento e entulho.
+                    </p>
+                </div>
+
+                <!-- Card 4: Exclusividade -->
+                <div class="bg-white rounded-2xl p-7 border border-stone-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center mb-5">
+                        <i data-lucide="key-round" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-bold text-forest-900 text-lg mb-2">100% Privativo</h3>
+                    <p class="text-stone-600 text-sm leading-relaxed">
+                        Diferente de pousadas convencionais, você não divide deck, ofurô ou jardim com ninguém. A propriedade inteira é exclusivamente sua durante a estadia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO 4: COMPARADOR AIRBNB VS RESERVA DIRETA & MOTOR DE RESERVA -->
+    <section id="reservar" class="py-20 bg-warmSand">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-forest-600 uppercase tracking-widest text-xs font-bold">Transparência & Economia</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-forest-900 mt-2">
+                    Faça sua Cotação Direta
+                </h2>
+                <p class="text-stone-600 text-sm sm:text-base mt-3">
+                    Ao reservar direto conosco, você não paga as taxas de intermediação de aplicativos e ganha flexibilidade no check-in.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <!-- Formulário de Seleção de Datas e Hóspedes -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+                        <h3 class="text-lg font-bold text-forest-900 flex items-center gap-2">
+                            <i data-lucide="calendar" class="w-5 h-5 text-forest-600"></i>
+                            Calendário de Disponibilidade
+                        </h3>
+                        <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Reservas deste site
+                        </span>
+                    </div>
+
+                    <!-- Mini Calendário Visual Interativo de Dias -->
+                    <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/90 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-forest-800" id="calendar-month-title">Novembro 2026</h4>
+                            <div class="flex items-center gap-1">
+                                <button id="cal-prev-month" class="p-1.5 rounded-lg hover:bg-stone-200 text-stone-600 transition text-xs">&larr;</button>
+                                <button id="cal-next-month" class="p-1.5 rounded-lg hover:bg-stone-200 text-stone-600 transition text-xs">&rarr;</button>
+                            </div>
+                        </div>
+
+                        <!-- Grade de Dias da Semana -->
+                        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-stone-400">
+                            <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div>
+                        </div>
+
+                        <!-- Dias Renderizados Dinamicamente -->
+                        <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center text-xs">
+                            <!-- Injetado via JS -->
+                        </div>
+
+                        <!-- Legenda do Calendário -->
+                        <div class="pt-2 border-t border-stone-200/60 flex flex-wrap items-center justify-between text-[10px] text-stone-500 gap-2">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-white border border-stone-300"></span> Disponível</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span> Selecionado</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-stone-300 line-through"></span> Ocupado ou aguardando PIX</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+</div><aside class="booking-sticky-sidebar" aria-label="Resumo da reserva"><div class="booking-sticky-frame"><div class="booking-summary-scroll">
+                <!-- Painel de Comparação de Preço e Finalização Direta -->
+                <div class="booking-sticky-content space-y-6">
+                    <div class="bg-forest-900 text-white p-7 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden" id="comparador">
+                        <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+                        <div class="flex items-center justify-between border-b border-stone-700/80 pb-4 mb-5">
+                            <div>
+                                <span class="text-xs uppercase tracking-wider text-amberWood font-bold">Resumo da Reserva</span>
+                                <h4 class="text-xl font-bold mt-0.5">Casa Contêiner Privativa</h4>
+                            </div>
+                            <span id="night-count-badge" class="bg-emerald-500/20 text-emerald-300 text-xs px-2.5 py-1 rounded-full font-semibold border border-emerald-500/30">
+                                2 Diárias
+                            </span>
+                        </div>
+
+                        <p class="text-sm text-stone-200 mb-4">Estadia mínima de <strong>2 diárias</strong>.</p>
+<div class="relative z-10 bg-white text-stone-800 p-4 rounded-2xl space-y-3 mb-5" aria-label="Datas e hóspedes da reserva">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1.5" for="checkin-date">Data de Check-in</label>
+                            <input type="date" id="checkin-date" class="min-w-0 bg-white text-stone-900 w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-forest-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-stone-700 mb-1.5" for="checkout-date">Data de Check-out</label>
+                            <input type="date" id="checkout-date" class="min-w-0 bg-white text-stone-900 w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-forest-600 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+<details id="guest-picker" class="guest-picker"><summary aria-controls="guest-options"><span><span class="guest-picker-label">Hóspedes</span><span id="guest-summary" aria-live="polite">2 hóspedes</span></span><span class="guest-picker-chevron" aria-hidden="true"></span></summary><fieldset id="guest-options" aria-describedby="guest-policy"><legend class="sr-only">Quantidade de hóspedes</legend><input type="hidden" id="guest-count" value="2"><div class="divide-y divide-stone-100"><div class="flex items-center justify-between gap-4 py-3"><span class="text-sm font-semibold text-stone-700">Adultos<span class="guest-age">Com 13 anos ou mais</span></span><div class="flex items-center gap-3"><button type="button" data-guest="guest-adults" data-step="-1" aria-label="Diminuir adultos" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">−</button><output id="guest-adults" data-count="2" aria-label="Quantidade de adultos" aria-live="polite" class="text-center w-6">2</output><button type="button" data-guest="guest-adults" data-step="1" aria-label="Adicionar adultos" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">+</button></div></div><div class="flex items-center justify-between gap-4 py-3"><span class="text-sm font-semibold text-stone-700">Crianças<span class="guest-age">De 2 a 12 anos</span></span><div class="flex items-center gap-3"><button type="button" data-guest="guest-children" data-step="-1" aria-label="Diminuir crianças" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">−</button><output id="guest-children" data-count="0" aria-label="Quantidade de crianças" aria-live="polite" class="text-center w-6">0</output><button type="button" data-guest="guest-children" data-step="1" aria-label="Adicionar crianças" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">+</button></div></div><div class="flex items-center justify-between gap-4 py-3"><span class="text-sm font-semibold text-stone-700">Bebês<span class="guest-age">Menores de 2 anos</span></span><div class="flex items-center gap-3"><button type="button" data-guest="guest-infants" data-step="-1" aria-label="Diminuir bebês" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">−</button><output id="guest-infants" data-count="0" aria-label="Quantidade de bebês" aria-live="polite" class="text-center w-6">0</output><button type="button" data-guest="guest-infants" data-step="1" aria-label="Adicionar bebês" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">+</button></div></div></div><div class="guest-pets"><div><span class="text-sm font-semibold text-stone-700">Animais de estimação</span><button type="button" id="service-animal-info" class="service-animal-link" aria-haspopup="dialog" aria-controls="service-animal-dialog">Vai levar um animal de serviço?</button></div><div class="flex items-center gap-3"><button type="button" class="guest-step rounded-full w-9 h-9 disabled:opacity-30" aria-label="Diminuir animais de estimação" disabled>−</button><output aria-label="Quantidade de animais de estimação" class="text-center w-6">0</output><button type="button" class="guest-step rounded-full w-9 h-9 disabled:opacity-30" aria-label="Adicionar animais de estimação" disabled>+</button></div></div><p id="guest-policy" class="text-xs text-stone-600 mt-3 leading-relaxed">Este espaço acomoda no máximo 8 hóspedes, não incluindo bebês. Animais de estimação não são permitidos.</p><button type="button" id="guest-picker-close" class="guest-picker-close">Fechar</button></fieldset></details>
+                        </div>
+                    </div>
+                        </div>
+                        <!-- Comparação Lado a Lado -->
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center justify-between text-stone-400">
+                                <span>Diárias (<span id="calc-nights">2</span>x R$ 600)</span>
+                                <span class="text-stone-200" id="calc-base-price">R$ 1.200,00</span>
+                            </div>
+                            <div class="flex items-center justify-between text-stone-400">
+                                <span>Taxa de Limpeza e Higienização</span>
+                                <span class="text-stone-200">R$ 150,00</span>
+                            </div>
+
+                            <!-- Comparação direta com o Airbnb -->
+                            <div class="p-3.5 rounded-xl bg-stone-800/80 border border-stone-700/80 space-y-2 mt-4">
+                                <div class="flex items-center justify-between text-xs text-rose-300/90">
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="info" class="w-3.5 h-3.5"></i> No Airbnb (diária de R$ 666):
+                                    </span>
+                                    <span class="line-through font-mono" id="airbnb-estimate-price">R$ 1.482,00</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-emerald-400 font-bold">
+                                    <span>Economia direta no seu bolso:</span>
+                                    <span id="savings-price" class="bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/40">R$ 132,00</span>
+                                </div>
+                            </div>
+
+                            <!-- Total Final -->
+                            <div class="pt-4 border-t border-stone-700/80 flex items-baseline justify-between">
+                                <div>
+                                    <span class="text-xs uppercase text-stone-400 font-semibold block">Total Direto com Proprietário</span>
+                                </div>
+                                <span class="text-3xl font-bold text-white tracking-tight" id="direct-total-price">
+                                    R$ 0,50
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- CTA Principal: Checkout Autônomo com Mercado Pago -->
+                        <div class="mt-8 space-y-3">
+                            <button id="btn-pix-checkout" hidden class="w-full bg-emerald-500 text-stone-950 font-bold py-4 px-6 rounded-2xl">Reservar</button><p id="payments-note" class="text-sm text-emerald-300 text-center" role="status">Reservas online ainda não estão disponíveis.</p>
+                        </div>
+                    </div>
+
+                    <!-- Garantia de Sincronização iCal -->
+                    <div class="bg-white p-5 rounded-2xl border border-stone-200/80 flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                        </div>
+                        <div class="text-xs">
+                            <span class="font-bold text-stone-800 block text-sm">Confirme a disponibilidade</span>
+                            <span id="availability-note" class="text-stone-500">Consultando disponibilidade…</span>
+                        </div>
+                    </div>
+                </div>
+</div></div></aside></div>
+
+    <!-- SEÇÃO 3: PIRACAIA & CALENDÁRIO INTERATIVO DE EVENTOS -->
+    <section id="piracaia" class="py-20 bg-forest-900 text-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span class="text-amberWood uppercase tracking-widest text-xs font-bold flex items-center gap-1.5">
+                        <i data-lucide="compass" class="w-4 h-4"></i> Roteiro Turístico Regional
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold mt-2">
+                        Piracaia: O Refúgio da Serra e da Represa
+                    </h2>
+                    <p class="text-stone-400 text-sm sm:text-base mt-2 max-w-2xl">
+                        A apenas 1h30 da capital e de Campinas, Piracaia é famosa pelo ecoturismo, cachoeiras, gastronomia caipira autêntica e esportes náuticos.
+                    </p>
+                </div>
+
+                <!-- Filtros do Calendário -->
+                <div class="flex flex-wrap items-center gap-2" id="event-filters">
+                    <button class="event-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white transition active" data-category="all">
+                        Todos os Eventos
+                    </button>
+                    <button class="event-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-stone-800 text-stone-300 hover:bg-stone-700 transition" data-category="represa">
+                        ⛵ Represa & Náutica
+                    </button>
+                    <button class="event-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-stone-800 text-stone-300 hover:bg-stone-700 transition" data-category="gastronomia">
+                        🧀 Gastronomia & Feiras
+                    </button>
+                    <button class="event-filter-btn px-4 py-2 rounded-xl text-xs font-semibold bg-stone-800 text-stone-300 hover:bg-stone-700 transition" data-category="cultural">
+                        🎉 Festas & Tradição
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grade de Eventos e Atrações de Piracaia -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="events-grid">
+                <!-- Injetado dinamicamente via JS -->
+            </div>
+
+            <!-- Destaques Turísticos Permanentes de Piracaia -->
+            <div class="mt-16 pt-12 border-t border-stone-800">
+                <h3 class="font-serif text-xl font-bold mb-6 text-stone-200">Pontos Turísticos Indispensáveis em Piracaia:</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-xl bg-stone-800/60 border border-stone-700/60 flex items-start gap-3">
+                        <span class="text-2xl">🌊</span>
+                        <div>
+                            <h4 class="font-bold text-sm text-stone-200">Represa do Jaguari</h4>
+                            <p class="text-xs text-stone-400 mt-1">Navegação, stand-up paddle, pesca e águas límpidas do Sistema Cantareira.</p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-stone-800/60 border border-stone-700/60 flex items-start gap-3">
+                        <span class="text-2xl">✝️</span>
+                        <div>
+                            <h4 class="font-bold text-sm text-stone-200">Santo Cruzeiro</h4>
+                            <p class="text-xs text-stone-400 mt-1">O maior crucifixo da América Latina com visão panorâmica de 360° da serra.</p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-stone-800/60 border border-stone-700/60 flex items-start gap-3">
+                        <span class="text-2xl">🌲</span>
+                        <div>
+                            <h4 class="font-bold text-sm text-stone-200">Cachoeira do Pião</h4>
+                            <p class="text-xs text-stone-400 mt-1">Piscinas naturais e trilha com rica fauna e flora de Mata Atlântica.</p>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-stone-800/60 border border-stone-700/60 flex items-start gap-3">
+                        <span class="text-2xl">🧀</span>
+                        <div>
+                            <h4 class="font-bold text-sm text-stone-200">Rota dos Queijos & Trutas</h4>
+                            <p class="text-xs text-stone-400 mt-1">Queijarias artesanais premiadas e gastronomia típica da Mantiqueira.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="bg-forest-950 text-stone-400 py-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10 border-b border-stone-800">
+                <div>
+                    <h4 class="text-white font-serif font-bold text-lg mb-2">EcoContainer Piracaia</h4>
+                    <p class="text-xs text-stone-400 leading-relaxed max-w-sm">
+                        Hospedagem sustentável em casa contêiner na Serra da Mantiqueira. A união entre sofisticação, isolamento termoacústico e a exuberância da natureza de Piracaia.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-white font-semibold text-sm mb-3">Links Úteis & Operação</h5>
+                    <ul class="text-xs space-y-2">
+                        <li><a href="guia-hospede.html" target="_blank" class="text-emerald-400 hover:underline flex items-center gap-1.5"><i data-lucide="book-open" class="w-3.5 h-3.5"></i> Guia público da hospedagem</a></li>
+                        <li><span class="text-stone-400">Acesso fácil e asfaltado até a propriedade.</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-white font-semibold text-sm mb-3">Contato Direto</h5>
+                    <p class="text-xs text-stone-400 leading-relaxed">
+                        Atendimento com o proprietário para locação de temporada e fins de semana.<br>
+                        Check-in a partir das 15h | Check-out até 12h
+                    </p>
+                </div>
+            </div>
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
+                <p>&copy; 2026 EcoContainer Piracaia. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÃO FLUTUANTE DE WHATSAPP (Sempre visível para tirar dúvidas) -->
+    <div class="fixed bottom-6 right-6 z-40 flex items-center gap-2 group">
+        <span class="hidden sm:inline-block bg-white text-stone-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg border border-stone-200/80 group-hover:block transition-all">
+            Dúvidas? Fale conosco! 👋
+        </span>
+        <a href="https://wa.me/5511998967740?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20a%20Casa%20Cont%C3%AAiner%20em%20Piracaia:" 
+           target="_blank" 
+           class="w-14 h-14 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all border-2 border-white"
+           title="Fale conosco no WhatsApp">
+            <i data-lucide="message-circle" class="w-7 h-7 text-white fill-current"></i>
+            <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-rose-500 border-2 border-white rounded-full animate-ping"></span>
+            <span class="absolute top-0 right-0 w-3.5 h-3.5 bg-rose-500 border-2 border-white rounded-full"></span>
+        </a>
+    </div>
+    <!-- INLINE JAVASCRIPT: Garante funcionamento imediato via duplo-clique no arquivo ou servidor -->
+    <script>
+        // 1. Inicialização de Ícones
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
+        // O modelo baseado nas fotos é carregado pelos módulos externos.
+
+        // 3. CALENDÁRIO & EVENTOS DE PIRACAIA
+        const piracaiaEvents = [
+            {
+                id: 'represa-nautica',
+                title: 'Temporada Náutica & Pôr do Sol na Represa',
+                category: 'represa',
+                categoryLabel: '⛵ Represa & Náutica',
+                dates: 'De Novembro a Abril (Alta Temporada)',
+                suggestedCheckin: '2026-11-20',
+                suggestedCheckout: '2026-11-22',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+                description: 'Aproveite as águas cristalinas da Represa do Jaguari para passeios de lancha, caiaque, pesca e um pôr do sol inesquecível na serra.',
+                distance: 'Apenas 12 min da casa contêiner'
+            },
+            {
+                id: 'festa-santo-antonio',
+                title: 'Festa do Padroeiro Santo Antônio',
+                category: 'cultural',
+                categoryLabel: '🎉 Tradição & Festa',
+                dates: 'Mês de Junho (Tradição Centenária)',
+                suggestedCheckin: '2027-06-11',
+                suggestedCheckout: '2027-06-13',
+                image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=600&q=80',
+                description: 'Uma das maiores e mais tradicionais festas juninas do interior paulista, com quadrilhas, gastronomia caipira autêntica e shows na praça central.',
+                distance: 'Centro de Piracaia (15 min)'
+            },
+            {
+                id: 'rota-queijos-vinhos',
+                title: 'Circuito dos Queijos Artesanais & Vinhedos',
+                category: 'gastronomia',
+                categoryLabel: '🧀 Gastronomia & Vinhos',
+                dates: 'Todos os Finais de Semana do Ano',
+                suggestedCheckin: '2026-12-04',
+                suggestedCheckout: '2026-12-06',
+                image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80',
+                description: 'Visite as queijarias premiadas da Serra da Mantiqueira em Piracaia e Joanópolis. Degustação de queijos de mofo branco, trutas frescas e cachaças locais.',
+                distance: 'Roteiro rural a 10-20 min'
+            },
+            {
+                id: 'santo-cruzeiro',
+                title: 'Mirante 360° do Santo Cruzeiro',
+                category: 'cultural',
+                categoryLabel: '✝️ Ponto Turístico',
+                dates: 'Aberto Diariamente (Melhor ao Entardecer)',
+                suggestedCheckin: '2026-11-27',
+                suggestedCheckout: '2026-11-29',
+                image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
+                description: 'Conheça o maior crucifixo da América Latina, com vista panorâmica para toda a cadeia de montanhas entre Piracaia, Atibaia e Joanópolis.',
+                distance: 'A 18 min do contêiner'
+            },
+            {
+                id: 'cachoeira-piao',
+                title: 'Trilha & Banho na Cachoeira do Pião',
+                category: 'represa',
+                categoryLabel: '🌲 Ecoturismo & Natureza',
+                dates: 'Perfeito para Dias Ensolarados',
+                suggestedCheckin: '2026-12-11',
+                suggestedCheckout: '2026-12-13',
+                image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=600&q=80',
+                description: 'Piscinas naturais preservadas e pequenas quedas d’água rodeadas pela exuberante Mata Atlântica nativa da região.',
+                distance: 'A 25 min em estrada de terra cênica'
+            },
+            {
+                id: 'festival-inverno',
+                title: 'Festival Gastronômico de Inverno da Mantiqueira',
+                category: 'gastronomia',
+                categoryLabel: '🍷 Temporada de Inverno',
+                dates: 'Julho & Agosto (Noites Frias & Lareira)',
+                suggestedCheckin: '2027-07-09',
+                suggestedCheckout: '2027-07-11',
+                image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80',
+                description: 'Clima de montanha perfeito para curtir o ofurô aquecido, lareira externa e pratos especiais com truta e fondue nos restaurantes de Piracaia.',
+                distance: 'Vários restaurantes parceiros'
+            }
+        ];
+
+        function renderEvents(category = 'all') {
+            const grid = document.getElementById('events-grid');
+            if (!grid) return;
+
+            const filtered = category === 'all' 
+                ? piracaiaEvents 
+                : piracaiaEvents.filter(e => e.category === category);
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-stone-800/80 rounded-2xl overflow-hidden border border-stone-700/70 hover:border-emerald-500/50 transition-all flex flex-col group shadow-lg">
+                    <div class="h-44 overflow-hidden relative">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold text-emerald-300 border border-emerald-500/30">
+                            ${item.categoryLabel}
+                        </div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[11px] text-amberWood font-bold block mb-1">📅 ${item.dates}</span>
+                            <h4 class="font-serif font-bold text-base text-white group-hover:text-emerald-300 transition-colors">
+                                ${item.title}
+                            </h4>
+                            <p class="text-stone-300 text-xs mt-2 leading-relaxed">
+                                ${item.description}
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-stone-700/60 flex items-center justify-between">
+                            <span class="text-[11px] text-stone-400">📍 ${item.distance}</span>
+                            <button class="btn-book-event text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow"
+                                    data-checkin="${item.suggestedCheckin}"
+                                    data-checkout="${item.suggestedCheckout}">
+                                <span>Reservar para esta data</span> &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.btn-book-event').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const checkin = btn.getAttribute('data-checkin');
+                    const checkout = btn.getAttribute('data-checkout');
+                    const cIn = document.getElementById('checkin-date');
+                    const cOut = document.getElementById('checkout-date');
+                    if (cIn) cIn.value = checkin;
+                    if (cOut) cOut.value = checkout;
+                    if (window.calculateBooking) window.calculateBooking();
+                    if (window.renderVisualCalendar) window.renderVisualCalendar();
+                    document.getElementById('reservar')?.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+        }
+
+        renderEvents('all');
+
+        document.querySelectorAll('.event-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.event-filter-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-emerald-600', 'text-white');
+                    b.classList.add('bg-stone-800', 'text-stone-300');
+                });
+                btn.classList.add('active', 'bg-emerald-600', 'text-white');
+                btn.classList.remove('bg-stone-800', 'text-stone-300');
+                renderEvents(btn.getAttribute('data-category'));
+            });
+        });
+
+        // 4. MOTOR DE RESERVA & CALCULADORA AIRBNB VS DIRETO
+        (function initBookingEngine() {
+            const DAILY_RATE = 600;
+            const CLEANING_FEE = 150;
+            const AIRBNB_DAILY_RATE = 666;
+            const OWNER_PHONE = '5511998967740';
+
+            const checkinInput = document.getElementById('checkin-date');
+            const checkoutInput = document.getElementById('checkout-date');
+            const guestSelect = document.getElementById('guest-count');
+
+            const today = new Date();
+            const nextFriday = new Date(today);
+            nextFriday.setDate(today.getDate() + ((7 - today.getDay() + 5) % 7 || 7));
+            const nextSunday = new Date(nextFriday);
+            nextSunday.setDate(nextFriday.getDate() + 2);
+
+            if (checkinInput && checkoutInput) {
+                checkinInput.value = nextFriday.toISOString().split('T')[0];
+                checkoutInput.value = nextSunday.toISOString().split('T')[0];
+            }
+
+            // ===============================================
+            // CALENDÁRIO VISUAL INTERATIVO & SINCRONIZAÇÃO AIRBNB
+            // ===============================================
+            let viewYear = today.getFullYear();
+            let viewMonth = today.getMonth();
+
+            // Disponibilidade confirmada manualmente pelo anfitrião.
+            let blockedDates = [];
+            window.addEventListener("eco-availability", () => { blockedDates = window.ecoBlockedDates || []; renderVisualCalendar(); });
+
+            const monthNames = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+
+            function renderVisualCalendar() {
+                const titleEl = document.getElementById('calendar-month-title');
+                const gridEl = document.getElementById('calendar-days-grid');
+                if (!titleEl || !gridEl) return;
+
+                titleEl.textContent = `${monthNames[viewMonth]} ${viewYear}`;
+                gridEl.innerHTML = '';
+
+                const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
+                const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+                const cInVal = checkinInput ? checkinInput.value : '';
+                const cOutVal = checkoutInput ? checkoutInput.value : '';
+
+                // Espaços vazios antes do dia 1
+                for (let i = 0; i < firstDayIndex; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'py-2';
+                    gridEl.appendChild(emptyCell);
+                }
+
+                // Dias do mês
+                for (let day = 1; day <= totalDays; day++) {
+                    const monthStr = String(viewMonth + 1).padStart(2, '0');
+                    const dayStr = String(day).padStart(2, '0');
+                    const dateStr = `${viewYear}-${monthStr}-${dayStr}`;
+
+                    const cell = document.createElement('button');
+                    cell.type = 'button';
+                    cell.textContent = day;
+                    cell.className = 'py-2 rounded-xl text-xs font-medium transition flex items-center justify-center relative ';
+
+                    const tooSoon = cInVal && !cOutVal && dateStr > cInVal && (Date.parse(dateStr) - Date.parse(cInVal)) / 86400000 < 2;
+                    const isBlocked = blockedDates.includes(dateStr) || tooSoon;
+                    cell.disabled = !!isBlocked;
+                    const isCheckin = dateStr === cInVal;
+                    const isCheckout = dateStr === cOutVal;
+                    const isInRange = cInVal && cOutVal && dateStr > cInVal && dateStr < cOutVal;
+
+                    if (isBlocked) {
+                        cell.className += 'bg-stone-200 text-stone-400 line-through cursor-not-allowed opacity-60';
+                        cell.title = tooSoon ? 'Estadia mínima de 2 diárias' : 'Data ocupada';
+                    } else if (isCheckin || isCheckout) {
+                        cell.className += 'bg-emerald-600 text-white font-bold shadow-md scale-105';
+                    } else if (isInRange) {
+                        cell.className += 'bg-emerald-100 text-emerald-900 font-semibold';
+                    } else {
+                        cell.className += 'bg-white hover:bg-emerald-50 text-stone-800 border border-stone-200/60';
+                    }
+
+                    if (!isBlocked) {
+                        cell.addEventListener('click', () => {
+                            if (!cInVal || (cInVal && cOutVal)) {
+                                checkinInput.value = dateStr;
+                                checkoutInput.value = '';
+                            } else if (cInVal && !cOutVal) {
+                                if (dateStr > cInVal) {
+                                    checkoutInput.value = dateStr;
+                                } else {
+                                    checkinInput.value = dateStr;
+                                    checkoutInput.value = '';
+                                }
+                            }
+                            calculate();
+                            renderVisualCalendar();
+                        });
+                    }
+
+                    gridEl.appendChild(cell);
+                }
+            }
+
+            document.getElementById('cal-prev-month')?.addEventListener('click', () => {
+                viewMonth--;
+                if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+                renderVisualCalendar();
+            });
+
+            document.getElementById('cal-next-month')?.addEventListener('click', () => {
+                viewMonth++;
+                if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+                renderVisualCalendar();
+            });
+
+            window.renderVisualCalendar = renderVisualCalendar;
+            renderVisualCalendar();
+
+            function formatBRL(val) {
+                return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            }
+
+            function calculate() {
+                if (!checkinInput || !checkoutInput) return;
+
+                if (checkinInput.value) {
+                    const earliest = new Date(Date.parse(checkinInput.value + 'T00:00:00Z') + 2 * 86400000).toISOString().slice(0, 10);
+                    checkoutInput.min = earliest;
+                    if (checkoutInput.value && checkoutInput.value < earliest) checkoutInput.value = earliest;
+                }
+                const cIn = new Date(checkinInput.value + 'T00:00:00');
+                const cOut = new Date(checkoutInput.value + 'T00:00:00');
+
+                let nights = Math.round((cOut - cIn) / (1000 * 60 * 60 * 24));
+                if (isNaN(nights) || nights < 2) nights = 2;
+
+                const baseLodging = nights * DAILY_RATE;
+                const subtotalDirect = baseLodging + CLEANING_FEE;
+                const totalDirect = 0.50; // Total temporário igual ao servidor.
+
+                const airbnbTotal = nights * AIRBNB_DAILY_RATE + CLEANING_FEE;
+                const savings = airbnbTotal - subtotalDirect;
+
+                document.getElementById('night-count-badge').textContent = `${nights} Diária${nights > 1 ? 's' : ''}`;
+                document.getElementById('calc-nights').textContent = nights;
+                document.getElementById('calc-base-price').textContent = formatBRL(baseLodging);
+
+                document.getElementById('airbnb-estimate-price').textContent = formatBRL(airbnbTotal);
+                document.getElementById('savings-price').textContent = `Economia de ${formatBRL(savings)}`;
+                document.getElementById('direct-total-price').textContent = formatBRL(totalDirect);
+
+                return {
+                    nights,
+                    checkin: checkinInput.value,
+                    checkout: checkoutInput.value,
+                    guests: guestSelect ? guestSelect.value : '2',
+                    totalDirect: formatBRL(totalDirect),
+                    savings: formatBRL(savings)
+                };
+            }
+
+            window.calculateBooking = calculate;
+            calculate();
+
+            checkinInput?.addEventListener('change', () => { calculate(); renderVisualCalendar(); });
+            checkoutInput?.addEventListener('change', () => { calculate(); renderVisualCalendar(); });
+            guestSelect?.addEventListener('change', calculate);
+
+
+
+        })();
+    </script>
+
+<style>
+#pix-checkout{border:0;border-radius:20px;padding:24px;width:min(94vw,480px);max-height:90vh;overflow:auto;color:#1c1917;background:#fff}#pix-checkout::backdrop{background:#000a}#pix-checkout [hidden],#btn-pix-checkout[hidden]{display:none!important}#pix-checkout input{display:block;border:1px solid #a8a29e;border-radius:8px;padding:10px;width:100%;margin:6px 0 16px}#pix-checkout button{padding:10px 16px;border-radius:9px;background:#047857;color:white}#pix-checkout button:disabled{opacity:.5}#pix-close{float:right}#pix-image{max-width:240px;width:100%;margin:16px auto}#pix-status,#pix-feedback,#pix-summary{margin:16px 0}#pix-feedback{color:#9a3412}#pix-code{font-family:monospace;font-size:12px}#pix-reservation{overflow-wrap:anywhere;font-family:monospace}
+</style>
+<dialog id="pix-checkout" aria-labelledby="pix-title">
+<button id="pix-close" type="button" aria-label="Fechar checkout">Fechar</button>
+<h2 id="pix-title" style="font-size:22px;font-weight:bold">Reserva por PIX</h2>
+<p id="pix-summary"></p>
+<form id="pix-form">
+<label for="pix-name">Nome completo</label><input id="pix-name" name="name" required minlength="3" maxlength="120" autocomplete="name">
+<label for="pix-email">E-mail</label><input id="pix-email" name="email" type="email" required maxlength="254" autocomplete="email">
+<p style="font-size:12px;margin-bottom:16px">Usaremos nome e e-mail para identificar sua reserva e processar o pagamento no Mercado Pago. O PIX é válido por 30 minutos. Confira as datas e o total antes de continuar.</p>
+<button id="pix-submit" type="submit" disabled>Gerar PIX no valor acima</button>
+</form>
+<p id="pix-status" role="status" aria-live="polite"></p>
+<div id="pix-details" hidden>
+<p>Reserva: <span id="pix-reservation"></span></p><p id="pix-period"></p><strong id="pix-amount"></strong>
+<img id="pix-image" alt="QR Code PIX gerado pelo Mercado Pago" hidden>
+<label for="pix-code">PIX Copia e Cola</label><input id="pix-code" readonly hidden><button id="pix-copy" type="button" hidden>Copiar PIX</button>
+<p style="margin-top:16px"><a href="https://wa.me/5511998967740" target="_blank" rel="noopener noreferrer">Falar com o anfitrião</a></p>
+</div>
+<p id="pix-feedback" role="alert"></p>
+</dialog>
+<script src="/js/checkout.js" defer></script>
+
+<script src="/js/residence-model.js"></script>
+<script src="/js/residence-viewer.js"></script>
+<script src="/js/photo-tour.js"></script>
+<script src="/js/guest-picker.js" defer></script>
+<dialog id="service-animal-dialog" aria-labelledby="service-animal-title" aria-describedby="service-animal-description"><button type="button" id="service-animal-close" aria-label="Fechar informações sobre animais de serviço">×</button><div class="service-animal-art" aria-hidden="true"><span>🏡</span><span>🧑‍🦯</span><span>🦮</span></div><h2 id="service-animal-title">Animais de serviço</h2><p id="service-animal-description">Animais de serviço não são animais de estimação, então você não precisa adicioná-los aqui.</p></dialog>
+</body>
+</html>
