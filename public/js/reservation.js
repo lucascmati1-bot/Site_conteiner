@@ -4,14 +4,6 @@
  for(const [key,fallback] of [['adults',2],['children',0],['infants',0]]) document.getElementById('guest-'+key).textContent=String(Number(params.get(key)??fallback));
  const adults=Number(document.getElementById('guest-adults').textContent), children=Number(document.getElementById('guest-children').textContent), infants=Number(document.getElementById('guest-infants').textContent);
  document.getElementById('guest-count').value=adults+children;
- for(const [key,value] of [['adults',adults],['children',children],['infants',infants]]) document.getElementById('edit-'+key).value=value;
- document.getElementById('apply-guests').addEventListener('click',()=>{
-  const adultInput=document.getElementById('edit-adults');adultInput.setCustomValidity('');
-  const a=Number(adultInput.value),c=Number(document.getElementById('edit-children').value),i=Number(document.getElementById('edit-infants').value);
-  if(a+c>8)adultInput.setCustomValidity('O máximo é de 8 hóspedes, sem contar bebês.');
-  if(!['adults','children','infants'].every(key=>document.getElementById('edit-'+key).reportValidity()))return;
-  const next=new URL(location.href);next.searchParams.set('adults',a);next.searchParams.set('children',c);next.searchParams.set('infants',i);location.href=next.pathname+next.search;
- });
  const format=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||'')?s.split('-').reverse().join('/'):'Selecione as datas';
  document.getElementById('reservation-dates').textContent=format(params.get('checkin'))+' até '+format(params.get('checkout'));
  document.getElementById('reservation-guests').textContent=adults+' adulto(s), '+children+' criança(s), '+infants+' bebê(s)';
