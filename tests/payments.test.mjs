@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { DatabaseSync } from 'node:sqlite';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { api } from '../worker/api.mjs';
 import { cardPayment, quote, orderState, orderPayload, validSignature } from '../worker/payment.mjs';
@@ -10,6 +11,9 @@ function db() {
   const sqlite = new DatabaseSync(':memory:');
   sqlite.exec('PRAGMA foreign_keys=ON');
   sqlite.exec(readFileSync('drizzle/0000_bookings.sql','utf8'));
+  sqlite.exec(readFileSync('drizzle/0001_guest_auth.sql','utf8'));
+  sqlite.prepare('INSERT INTO guest_users(id,google_sub,name,email,created_at) VALUES (?,?,?,?,?)').run('test-user','google-sub-test','Teste','guest@example.com',1);
+  sqlite.prepare('INSERT INTO auth_sessions(token_hash,user_id,expires_at) VALUES (?,?,?)').run(createHash('sha256').update('b'.repeat(64)).digest('hex'),'test-user',Date.now()+86400000);
   const wrap = (sql, values=[]) => ({ sql, values, bind(...args) { return wrap(sql,args); }, async first() { return sqlite.prepare(sql).get(...values) || null; }, async all() { return { results: sqlite.prepare(sql).all(...values) }; }, async run() { return sqlite.prepare(sql).run(...values); } });
   return { sqlite, prepare:wrap, async batch(statements) { sqlite.exec('BEGIN'); try { const results=statements.map(s=>sqlite.prepare(s.sql).run(...s.values)); sqlite.exec('COMMIT'); return results; } catch(e) { sqlite.exec('ROLLBACK'); throw e; } } };
 }
@@ -29,7 +33,7 @@ function env() {
     }
   }; return {value,state};
 }
-function create(id=crypto.randomUUID(), key='a'.repeat(64), data=input, methodOrigin=origin) {return new Request(origin+'/api/create-payment',{method:'POST',headers:{Origin:methodOrigin,'Content-Type':'application/json','Idempotency-Key':id,'X-Booking-Key':key},body:JSON.stringify(data)});}
+function create(id=crypto.randomUUID(), key='a'.repeat(64), data=input, methodOrigin=origin) {return new Request(origin+'/api/create-payment',{method:'POST',headers:{Cookie:'eco_session='+'b'.repeat(64),Origin:methodOrigin,'Content-Type':'application/json','Idempotency-Key':id,Cookie:'eco_session='+'b'.repeat(64),'X-Booking-Key':key},body:JSON.stringify(data)});}
 
 test('total temporário é cinquenta centavos, ignora total enviado e valida datas e extras', () => {
   assert.equal(quote({...input,total:99999}).totalCents,50);
@@ -88,7 +92,7 @@ test('cancelamento verificado libera noites e aprovação conserva bloqueio', as
   const booking=value.DB.sqlite.prepare('SELECT * FROM bookings').get();
   state.orders.get(booking.order_id).status='canceled';
   value.DB.sqlite.prepare('UPDATE bookings SET last_checked=0').run();
-  const response=await api(new Request(origin+'/api/check-payment/'+id,{headers:{'X-Booking-Key':'a'.repeat(64)}}),value);
+  const response=await api(new Request(origin+'/api/check-payment/'+id,{headers:{Cookie:'eco_session='+'b'.repeat(64),'X-Booking-Key':'a'.repeat(64)}}),value);
   assert.equal((await response.json()).status,'canceled');
   assert.equal(value.DB.sqlite.prepare('SELECT COUNT(*) AS n FROM night_locks').get().n,0);
 });

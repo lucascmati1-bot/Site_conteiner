@@ -1,3 +1,4 @@
+import { authApi, requireGuest, authUser } from './auth.mjs';
 import { ApiError, cardPayment, quote, validateGuest, orderPayload, orderState, sha256, validSignature } from './payment.mjs';
 const uuidPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
 const apiJson = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' } });
@@ -56,6 +57,7 @@ function publicBooking(booking) {
 async function createPayment(request, env) {
   if (!configured(env)) throw new ApiError(503, 'Pagamentos online ainda não estão disponíveis.');
   if (request.headers.get('origin') !== env.PUBLIC_BASE_URL) throw new ApiError(403, 'Origem inválida.');
+  const signedInGuest = await requireGuest(request, env);
   const id = request.headers.get('idempotency-key') || '', access = request.headers.get('x-booking-key') || '';
   if (!uuidPattern.test(id) || !/^[a-f0-9]{64}$/.test(access)) throw new ApiError(400, 'Identificador de solicitação inválido.');
   const data = await body(request);
@@ -65,6 +67,7 @@ async function createPayment(request, env) {
   const requestHash = await sha256(JSON.stringify({ ...q, ...guest, ...(card ? { card } : {}) })), accessHash = await sha256(access);
   let booking = await findBooking(env, id);
   if (booking) {
+    if (booking.user_id && booking.user_id !== signedInGuest.id) throw new ApiError(403, 'Esta reserva pertence a outra conta.');
     if (booking.access_hash !== accessHash) throw new ApiError(403, 'Solicitação inválida.');
     if (booking.request_hash !== requestHash) throw new ApiError(409, 'Esta solicitação já usa outros dados.');
   } else {
@@ -72,8 +75,8 @@ async function createPayment(request, env) {
     const payload = orderPayload(id, q.totalCents, guest.email, card), now = Date.now();
     try {
       await env.DB.batch([
-        env.DB.prepare('INSERT INTO bookings(id,access_hash,request_hash,checkin,checkout,total_cents,guest_name,guest_email,order_payload,created_at,expires_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)')
-          .bind(id, accessHash, requestHash, q.checkin, q.checkout, q.totalCents, guest.name, guest.email, JSON.stringify(payload), now, now + 30 * 60000),
+        env.DB.prepare('INSERT INTO bookings(id,access_hash,request_hash,checkin,checkout,total_cents,guest_name,guest_email,order_payload,created_at,expires_at,user_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)')
+          .bind(id, accessHash, requestHash, q.checkin, q.checkout, q.totalCents, guest.name, guest.email, JSON.stringify(payload), now, now + 30 * 60000, signedInGuest.id),
         ...q.dates.map(date => env.DB.prepare('INSERT INTO night_locks(night,booking_id) VALUES (?,?)').bind(date, id))
       ]);
     } catch {
@@ -130,6 +133,15 @@ async function webhook(request, env, url) {
 export async function api(request, env) {
   const url = new URL(request.url), pathname = url.pathname;
   try {
+    if (pathname.startsWith('/api/auth/')) return await authApi(request, env, url);
+    if (pathname === '/api/card-load-timing' && request.method === 'POST') {
+      if (request.headers.get('origin') !== env.PUBLIC_BASE_URL) throw new ApiError(403, 'Origem inválida.');
+      const metric = await body(request);
+      if (!['sdk_download','page_response','fields_ready','fields_timeout','fields_error','brick_created','init_error'].includes(metric.stage) || !Number.isInteger(metric.ms) || metric.ms < 0 || metric.ms > 300000) throw new ApiError(400, 'Medição inválida.');
+      await limit(request, env, 'card-timing', 180);
+      console.info(JSON.stringify({ event: 'card_load_timing', stage: metric.stage, ms: metric.ms }));
+      return apiJson({ received: true });
+    }
     if (pathname === '/api/config' && request.method === 'GET') return apiJson({ paymentsEnabled: configured(env), cardEnabled: configured(env) && env.MP_CARD_ENABLED === 'true' && !!env.MP_PUBLIC_KEY, publicKey: env.MP_PUBLIC_KEY || '', maxInstallments: 12, interestPayer: 'buyer', dailyRate: 600, cleaningFee: 150, currency: 'BRL' });
     if (pathname === '/api/quote' && request.method === 'POST') {
       if (request.headers.get('origin') !== env.PUBLIC_BASE_URL) throw new ApiError(403, 'Origem inválida.');
@@ -150,6 +162,7 @@ export async function api(request, env) {
       if (!env.DB) throw new ApiError(503, 'Serviço indisponível.');
       const booking = await findBooking(env, pathname.slice('/api/check-payment/'.length));
       if (!booking || booking.access_hash !== await sha256(request.headers.get('x-booking-key') || '')) throw new ApiError(404, 'Reserva não encontrada.');
+      if (booking.user_id) { const user = await requireGuest(request, env); if (user.id !== booking.user_id) throw new ApiError(404, 'Reserva não encontrada.'); }
       await limit(request, env, 'status', 150);
       return apiJson(publicBooking(await refresh(env, booking)));
     }

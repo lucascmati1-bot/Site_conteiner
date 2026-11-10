@@ -21,7 +21,7 @@ test('banco local persiste reservas e aplica migrações somente uma vez', async
     await db.prepare('INSERT INTO night_locks(night,booking_id) VALUES (?,?)').bind('2027-01-08', 'local-test').run();
     db.close(); db = openLocalDatabase(filename, path.join(root, 'drizzle'));
     assert.equal((await db.prepare('SELECT guest_name FROM bookings WHERE id=?').bind('local-test').first()).guest_name, 'Teste');
-    assert.equal((await db.prepare('SELECT COUNT(*) AS count FROM _local_schema_migrations').first()).count, 1);
+    assert.equal((await db.prepare('SELECT COUNT(*) AS count FROM _local_schema_migrations').first()).count, 2);
     await assert.rejects(db.batch([
       db.prepare('INSERT INTO request_limits(bucket,count) VALUES (?,?)').bind('rollback-test', 1),
       db.prepare('INSERT INTO night_locks(night,booking_id) VALUES (?,?)').bind('2027-01-08', 'local-test')

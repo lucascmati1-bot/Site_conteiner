@@ -7,14 +7,18 @@
   const feedback = document.getElementById('pix-feedback');
   const submit = document.getElementById('pix-submit');
   const welcome = document.createElement('a');
-  welcome.href = '/boas-vindas.html';
+  welcome.href = '/guia-hospede.html';
   welcome.className = 'welcome-button';
-  welcome.textContent = 'Ver boas-vindas →';
+  welcome.textContent = 'Abrir manual digital de boas-vindas →';
   welcome.hidden = true;
   details.append(welcome);
   let serverQuote, cardConfig, cardController, cardLoading = false, submitting = false, selected, poll, polling = false, attempt = null;
   const formatDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? value.split('-').reverse().join('/') : value;
   const money = value => Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  function reportCardTiming(stage, ms) {
+    if (!Number.isFinite(ms)) return;
+    fetch('/api/card-load-timing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ stage, ms: Math.round(ms) }), keepalive: true }).catch(() => {});
+  }
   function selectionIdentity(data) {
     return JSON.stringify([data.checkin, data.checkout, Number(data.guests), Number(data.adults ?? data.guests), Number(data.children || 0), Number(data.infants || 0), [...(data.extras || [])].sort()]);
   }
@@ -102,6 +106,7 @@
       window.dispatchEvent(new Event('eco-availability'));
       document.getElementById('availability-note').textContent = 'Datas ocupadas ou aguardando pagamento são bloqueadas. A disponibilidade é conferida novamente ao gerar o PIX.';
     } catch {
+      window.dispatchEvent(new Event('eco-availability-error'));
       document.getElementById('availability-note').textContent = 'Não foi possível atualizar o calendário. A disponibilidade será conferida ao gerar o PIX.';
     }
   }
@@ -119,12 +124,13 @@
       serverQuote = q;
       document.getElementById('pix-summary').textContent = `${formatDate(q.checkin)} até ${formatDate(q.checkout)} · ${q.nights} noites · Total ${money(q.total)}`;
       submit.disabled = document.body.dataset.reservationPage === 'true';
-      if (document.body.dataset.reservationPage === 'true') { document.getElementById('reservation-total').textContent = money(q.total); document.getElementById('reservation-nights').textContent = q.nights + ' diárias × R$ 600,00'; document.dispatchEvent(new Event('eco-payment-config')); }
+      if (document.body.dataset.reservationPage === 'true') { document.getElementById('reservation-total').textContent = money(q.total); document.getElementById('reservation-nights').textContent = q.nights + ' diárias × R$ 600,00'; document.dispatchEvent(new Event('eco-payment-config')); updatePaymentChoice(); }
       if (attempt?.payload) { form.elements.name.value = attempt.payload.name; form.elements.email.value = attempt.payload.email; }
     } catch (e) { feedback.textContent = e.message; submit.disabled = true; }
   }
   if (document.body.dataset.reservationPage === 'true') openCheckout();
   else button?.addEventListener('click', () => {
+    if (window.validateBookingDates && !window.validateBookingDates()) { document.getElementById('checkin-date').reportValidity(); return; }
     const selection = capture();
     if (!selection.checkin || !selection.checkout || (Date.parse(selection.checkout)-Date.parse(selection.checkin))/86400000 < 2) { alert('Selecione uma estadia de pelo menos 2 diárias.'); return; }
     location.href = '/reservar.html?' + new URLSearchParams(Object.entries(selection).filter(([key]) => key !== 'extras'));
@@ -161,33 +167,39 @@
     const cardSelected = document.getElementById('card-choice').checked;
     submit.hidden = cardSelected;
     const section = document.getElementById('card-section');
-    const reviewed = !document.getElementById('review-step').hidden;
-    section.hidden = !cardSelected || !reviewed;
-    if (!cardSelected || !reviewed || cardController || cardLoading || !cardConfig?.cardEnabled || !serverQuote) return;
+    const paymentOpen = !document.getElementById('payment-step').hidden;
+    section.hidden = !cardSelected || !paymentOpen;
+    section.inert = false;
+    const pixOption = document.getElementById('pix-option-details'); if (pixOption) pixOption.hidden = cardSelected;
+    const interestNote = document.getElementById('card-installment-note'); if (interestNote) interestNote.hidden = !cardSelected;
+    if (!cardSelected || !paymentOpen || cardController || cardLoading || !cardConfig?.cardEnabled || !serverQuote) return;
     cardLoading = true;
+    const mountStarted = performance.now();
+    const sdkResource = performance.getEntriesByType('resource').find(entry => entry.name.startsWith('https://sdk.mercadopago.com/js/v2'));
+    if (sdkResource) reportCardTiming('sdk_download', sdkResource.duration);
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (navigation) reportCardTiming('page_response', navigation.responseEnd - navigation.requestStart);
     const loadingStatus = document.getElementById('card-loading-status');
     const retry = document.getElementById('card-retry');
     loadingStatus.hidden = false; loadingStatus.textContent = 'Carregando formulário seguro do Mercado Pago…'; retry.hidden = true;
-    const loadingTimeout = setTimeout(() => { loadingStatus.textContent = 'O formulário está demorando para carregar. Confira sua conexão ou tente novamente.'; retry.hidden = false; }, 20000);
+    const loadingTimeout = setTimeout(() => { reportCardTiming('fields_timeout', performance.now() - mountStarted); loadingStatus.textContent = 'O formulário está demorando para carregar. Confira sua conexão ou tente novamente.'; retry.hidden = false; }, 20000);
     try {
       if (!window.MercadoPago) throw new Error('Não foi possível carregar o formulário do Mercado Pago. Atualize a página.');
       const mp = new MercadoPago(cardConfig.publicKey, { locale: 'pt-BR' });
       cardController = await mp.bricks().create('cardPayment', 'card-payment-brick', {
         initialization: { amount: Number(serverQuote.total), payer: { email: form.elements.email.value } },
         customization: { paymentMethods: { minInstallments: 1, maxInstallments: 12, types: { excluded: ['debit_card', 'prepaid_card'] } } },
-        callbacks: { onReady: () => { clearTimeout(loadingTimeout); loadingStatus.hidden = true; retry.hidden = true; }, onError: error => { clearTimeout(loadingTimeout); loadingStatus.hidden = false; loadingStatus.textContent = 'Não foi possível carregar ou validar o formulário do Mercado Pago. Tente novamente.'; retry.hidden = false; }, onSubmit: async (data, extra) => {
-          if (!cardConfig.cardEnabled || !form.reportValidity() || document.getElementById('review-step').hidden) throw new Error('Revise seus dados antes de continuar.');
+        callbacks: { onReady: () => { reportCardTiming('fields_ready', performance.now() - mountStarted); clearTimeout(loadingTimeout); loadingStatus.hidden = true; retry.hidden = true; }, onError: error => { reportCardTiming('fields_error', performance.now() - mountStarted); clearTimeout(loadingTimeout); loadingStatus.hidden = false; loadingStatus.textContent = 'Não foi possível carregar ou validar o formulário do Mercado Pago. Tente novamente.'; retry.hidden = false; }, onSubmit: async (data, extra) => {
+          if (!cardConfig.cardEnabled || !form.reportValidity() || document.getElementById('payment-step').hidden) throw new Error('Conclua seus dados antes de continuar.');
           if (extra.paymentTypeId !== 'credit_card') throw new Error('Escolha um cartão de crédito.');
           await processPayment({ preventDefault() {} }, { type: 'credit_card', id: data.payment_method_id, token: data.token, installments: Number(data.installments), identification: data.payer.identification });
         } }
       });
-    } catch (error) { clearTimeout(loadingTimeout); loadingStatus.textContent = error.message || 'Não foi possível carregar o formulário seguro.'; retry.hidden = false; } finally { cardLoading = false; }
+      reportCardTiming('brick_created', performance.now() - mountStarted);
+    } catch (error) { reportCardTiming('init_error', performance.now() - mountStarted); clearTimeout(loadingTimeout); loadingStatus.textContent = error.message || 'Não foi possível carregar o formulário seguro.'; retry.hidden = false; } finally { cardLoading = false; }
   }
   document.querySelectorAll('input[name="payment-choice"]').forEach(input => input.addEventListener('change', updatePaymentChoice));
-  document.getElementById('continue-payment')?.addEventListener('click', () => {
-    updatePaymentChoice();
-    if (document.getElementById('card-choice').checked) document.getElementById('card-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
+  window.addEventListener('eco-payment-step', updatePaymentChoice);
   document.getElementById('card-retry')?.addEventListener('click', async () => {
     if (cardLoading) { location.reload(); return; }
     await cardController?.unmount(); cardController = null;
@@ -203,7 +215,7 @@
     }
     if (button) button.hidden = false;
     document.getElementById('payments-note').hidden = document.body.dataset.reservationPage !== 'true' || config.paymentsEnabled;
-    if (document.body.dataset.reservationPage === 'true') { window.ecoPaymentsEnabled = config.paymentsEnabled; document.dispatchEvent(new Event('eco-payment-config')); }
+    if (document.body.dataset.reservationPage === 'true') { window.ecoPaymentsEnabled = config.paymentsEnabled; document.dispatchEvent(new Event('eco-payment-config')); updatePaymentChoice(); }
   }).catch(() => { if (button) button.hidden = false; });
   refreshAvailability();
 })();

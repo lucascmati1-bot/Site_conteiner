@@ -21,6 +21,7 @@ execFileSync(process.execPath, [path.join(root, 'scripts/build.mjs')], { cwd: ro
 const worker = (await import(pathToFileURL(path.join(root, 'dist/server/index.js')).href)).default;
 const DB = openLocalDatabase(path.join(root, '.local', 'reservas.sqlite'), path.join(root, 'drizzle'));
 const env = {
+  GOOGLE_CLIENT_ID: config.GOOGLE_CLIENT_ID || '', GOOGLE_CLIENT_SECRET: config.GOOGLE_CLIENT_SECRET || '',
   DB, PUBLIC_BASE_URL: base.origin, MP_PUBLIC_KEY: config.MP_PUBLIC_KEY || '', MP_CARD_ENABLED: config.MP_CARD_ENABLED || 'false',
   MP_ACCESS_TOKEN: config.MP_ACCESS_TOKEN || '', MP_WEBHOOK_SECRET: config.MP_WEBHOOK_SECRET || '',
   PAYMENTS_ENABLED: config.PAYMENTS_ENABLED === 'true' ? 'true' : 'false'

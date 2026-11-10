@@ -5,3 +5,9 @@
 .welcome-button{display:inline-flex;align-items:center;justify-content:center;margin-top:20px;padding:15px 22px;background:#14532d;color:white;border-radius:12px;font-weight:700;text-decoration:none}.welcome-button[hidden]{display:none!important}
 
 .previous-attempts{padding:16px 20px;border:1px solid #e1d2b1;background:#faf3e4;border-radius:16px;margin-bottom:24px}.previous-attempts p{margin:0 0 8px;font-size:13px}.previous-attempts a{display:block;font-size:13px;margin:6px 0;text-underline-offset:3px}
+
+.account-logout{background:transparent;color:#57534e;font-size:12px;text-decoration:underline;padding:8px;margin-left:10px}
+
+.reservation-create-account{display:inline-block;margin:16px 0 0 18px;font-size:14px;font-weight:600;text-underline-offset:4px}.reservation-create-account[hidden]{display:none}
+
+.checkout-guests label{display:flex;align-items:center;justify-content:space-between;gap:12px}.checkout-guests input{width:80px}.checkout-guests button{font-size:12px;padding:10px 14px}

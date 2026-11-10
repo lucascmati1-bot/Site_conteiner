@@ -79,3 +79,13 @@ Para ativar, preencha MP_PUBLIC_KEY no .env com a chave da mesma aplicação do 
 
 ## Teste temporário de transação
 O total de novas reservas está temporariamente fixado em R$ 0,50 no servidor e na tela. As tarifas de referência estão preservadas. Cobranças anteriores mantêm seu valor; restaure o cálculo normal após o teste.
+
+## Login dos hóspedes com Google
+A primeira etapa da reserva consulta /api/auth/me. Quem não tem sessão é direcionado a login.html, mantendo na URL somente as datas e quantidades de hóspedes. Criar conta usa Google: o primeiro acesso cria o cadastro e acessos seguintes reutilizam o google_sub. Não há senha local.
+
+Configure um cliente OAuth do tipo Aplicativo da Web no Google Auth Platform. Use openid, email e profile. Cadastre exatamente este URI de redirecionamento:
+https://ecocontainer-piracaia.suportecma-ti.chatgpt.site/api/auth/google/callback
+
+Preencha GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET no .env; na hospedagem, essas variáveis são configuradas separadamente como segredos e exigem nova publicação. Enquanto faltarem as credenciais, a tela indica configuração pendente e o pagamento exige login. Se a aplicação Google estiver em teste, inclua o e-mail do usuário na lista de testadores; cumpra os requisitos de domínio e verificação exigidos pelo Google para uso público. O controle de acesso ChatGPT da hospedagem continua separado e foi preservado.
+
+A autenticação usa authorization code com PKCE, state de uso único vinculado a cookie HttpOnly, nonce e verificação criptográfica do ID token do Google (assinatura, emissor, audiência, validade e e-mail verificado). As sessões são aleatórias, armazenadas apenas por hash no banco, duram 7 dias e podem ser encerradas em Sair da conta. As reservas novas são vinculadas ao usuário autenticado; migrações preservam as reservas anteriores.

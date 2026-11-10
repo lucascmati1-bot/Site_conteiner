@@ -3,12 +3,13 @@ import path from 'node:path';
 const root = process.cwd();
 const output = path.join(root, 'dist');
 if (path.dirname(output) !== root || path.basename(output) !== 'dist') throw new Error('Saída inválida.');
-const files = ['index.html', 'boas-vindas.html', 'css/welcome.css', 'reservar.html', 'css/reservation.css', 'js/reservation.js', 'modelo-residencia.html', 'guia-hospede.html', 'css/photo-tour.css', 'css/guest-picker.css', 'css/booking-layout.css', 'js/checkout.js', 'js/guest-picker.js', 'js/photo-tour.js', 'js/residence-model.js', 'js/residence-viewer.js'];
+const files = ['index.html', 'login.html', 'css/login.css', 'js/login.js', 'reservar.html', 'css/reservation.css', 'js/reservation.js', 'modelo-residencia.html', 'guia-hospede.html', 'css/photo-tour.css', 'css/guest-picker.css', 'css/booking-layout.css', 'js/checkout.js', 'js/guest-picker.js', 'js/photo-tour.js', 'js/residence-model.js', 'js/residence-viewer.js'];
 const assets = Object.fromEntries(files.map(file => ['/' + file, fs.readFileSync(path.join('public', file), 'utf8')]));
 assets['/'] = assets['/index.html'];
 const payment = fs.readFileSync('worker/payment.mjs', 'utf8').replaceAll('export ', '');
-const api = fs.readFileSync('worker/api.mjs', 'utf8').replace(/^import[^\n]*\n/, '').replace('export async function api', 'async function api');
-const worker = `${payment}\n${api}\nconst assets = ${JSON.stringify(assets)};
+const auth = fs.readFileSync('worker/auth.mjs', 'utf8').replace(/^import[^\n]*\n/, '').replaceAll('export ', '');
+const api = fs.readFileSync('worker/api.mjs', 'utf8').replace(/^import[^\n]*\n/gm, '').replace('export async function api', 'async function api');
+const worker = `${payment}\n${auth}\n${api}\nconst assets = ${JSON.stringify(assets)};
 export default { async fetch(request, env) {
  const url = new URL(request.url);
  let response;

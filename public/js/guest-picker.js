@@ -1,5 +1,6 @@
 (() => {
   const picker = document.getElementById('guest-picker');
+  if (!picker) return;
   const summary = document.getElementById('guest-summary');
   const total = document.getElementById('guest-count');
   const fields = Object.fromEntries(['adults', 'children', 'infants'].map(key => [key, document.getElementById('guest-' + key)]));

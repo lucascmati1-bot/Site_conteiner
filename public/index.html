@@ -192,8 +192,8 @@
                 <!-- Card de Destaque / Foto Panorâmica com Selo -->
                 <div class="lg:col-span-5 relative">
                     <div class="relative mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-stone-900 group">
-                        <img src="https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=1000&q=80" 
-                             alt="Casa Container em meio à natureza com deck de madeira" 
+                        <img src="https://a0.muscache.com/im/pictures/miso/Hosting-1213833985011094710/original/8501e12b-402e-4e7d-9e7d-e199a748451d.jpeg?im_w=1200" 
+                             alt="Exterior da Casa Contêiner EcoContainer Piracaia" fetchpriority="high" decoding="async" 
                              class="w-full h-[460px] object-cover group-hover:scale-105 transition-transform duration-700 opacity-90">
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -405,6 +405,7 @@
                         </span>
                     </div>
 
+                    <div class="flex items-center justify-between gap-3"><p id="calendar-selection-status" class="text-sm text-stone-600" aria-live="polite">Selecione o check-in no calendário.</p><button type="button" id="calendar-clear-dates" class="text-xs font-semibold text-forest-800 underline whitespace-nowrap">Limpar datas</button></div>
                     <!-- Mini Calendário Visual Interativo de Dias -->
                     <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/90 space-y-3">
                         <div class="flex items-center justify-between">
@@ -448,69 +449,27 @@
                     <div class="bg-forest-900 text-white p-7 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden" id="comparador">
                         <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
 
-                        <div class="flex items-center justify-between border-b border-stone-700/80 pb-4 mb-5">
-                            <div>
-                                <span class="text-xs uppercase tracking-wider text-amberWood font-bold">Resumo da Reserva</span>
-                                <h4 class="text-xl font-bold mt-0.5">Casa Contêiner Privativa</h4>
-                            </div>
-                            <span id="night-count-badge" class="bg-emerald-500/20 text-emerald-300 text-xs px-2.5 py-1 rounded-full font-semibold border border-emerald-500/30">
-                                2 Diárias
-                            </span>
-                        </div>
-
-                        <p class="text-sm text-stone-200 mb-4">Estadia mínima de <strong>2 diárias</strong>.</p>
-<div class="relative z-10 bg-white text-stone-800 p-4 rounded-2xl space-y-3 mb-5" aria-label="Datas e hóspedes da reserva">
+<div class="relative z-10 bg-white text-stone-800 p-4 rounded-2xl space-y-3 mb-5" aria-label="Datas da reserva"><p id="booking-dates-error" class="text-xs text-amber-800" role="status" hidden></p>
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-stone-700 mb-1.5" for="checkin-date">Data de Check-in</label>
-                            <input type="date" id="checkin-date" class="min-w-0 bg-white text-stone-900 w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-forest-600 focus:outline-none">
+                            <input type="date" id="checkin-date" readonly aria-controls="calendar-days-grid" title="Escolher check-in no calendário" class="min-w-0 bg-white text-stone-900 w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-forest-600 focus:outline-none">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-stone-700 mb-1.5" for="checkout-date">Data de Check-out</label>
-                            <input type="date" id="checkout-date" class="min-w-0 bg-white text-stone-900 w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-forest-600 focus:outline-none">
+                            <input type="date" id="checkout-date" readonly aria-controls="calendar-days-grid" title="Escolher check-out no calendário" class="min-w-0 bg-white text-stone-900 w-full px-4 py-3 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-forest-600 focus:outline-none">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-4">
                         <div>
-<details id="guest-picker" class="guest-picker"><summary aria-controls="guest-options"><span><span class="guest-picker-label">Hóspedes</span><span id="guest-summary" aria-live="polite">2 hóspedes</span></span><span class="guest-picker-chevron" aria-hidden="true"></span></summary><fieldset id="guest-options" aria-describedby="guest-policy"><legend class="sr-only">Quantidade de hóspedes</legend><input type="hidden" id="guest-count" value="2"><div class="divide-y divide-stone-100"><div class="flex items-center justify-between gap-4 py-3"><span class="text-sm font-semibold text-stone-700">Adultos<span class="guest-age">Com 13 anos ou mais</span></span><div class="flex items-center gap-3"><button type="button" data-guest="guest-adults" data-step="-1" aria-label="Diminuir adultos" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">−</button><output id="guest-adults" data-count="2" aria-label="Quantidade de adultos" aria-live="polite" class="text-center w-6">2</output><button type="button" data-guest="guest-adults" data-step="1" aria-label="Adicionar adultos" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">+</button></div></div><div class="flex items-center justify-between gap-4 py-3"><span class="text-sm font-semibold text-stone-700">Crianças<span class="guest-age">De 2 a 12 anos</span></span><div class="flex items-center gap-3"><button type="button" data-guest="guest-children" data-step="-1" aria-label="Diminuir crianças" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">−</button><output id="guest-children" data-count="0" aria-label="Quantidade de crianças" aria-live="polite" class="text-center w-6">0</output><button type="button" data-guest="guest-children" data-step="1" aria-label="Adicionar crianças" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">+</button></div></div><div class="flex items-center justify-between gap-4 py-3"><span class="text-sm font-semibold text-stone-700">Bebês<span class="guest-age">Menores de 2 anos</span></span><div class="flex items-center gap-3"><button type="button" data-guest="guest-infants" data-step="-1" aria-label="Diminuir bebês" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">−</button><output id="guest-infants" data-count="0" aria-label="Quantidade de bebês" aria-live="polite" class="text-center w-6">0</output><button type="button" data-guest="guest-infants" data-step="1" aria-label="Adicionar bebês" class="guest-step rounded-full border border-stone-300 w-9 h-9 disabled:opacity-30">+</button></div></div></div><div class="guest-pets"><div><span class="text-sm font-semibold text-stone-700">Animais de estimação</span><button type="button" id="service-animal-info" class="service-animal-link" aria-haspopup="dialog" aria-controls="service-animal-dialog">Vai levar um animal de serviço?</button></div><div class="flex items-center gap-3"><button type="button" class="guest-step rounded-full w-9 h-9 disabled:opacity-30" aria-label="Diminuir animais de estimação" disabled>−</button><output aria-label="Quantidade de animais de estimação" class="text-center w-6">0</output><button type="button" class="guest-step rounded-full w-9 h-9 disabled:opacity-30" aria-label="Adicionar animais de estimação" disabled>+</button></div></div><p id="guest-policy" class="text-xs text-stone-600 mt-3 leading-relaxed">Este espaço acomoda no máximo 8 hóspedes, não incluindo bebês. Animais de estimação não são permitidos.</p><button type="button" id="guest-picker-close" class="guest-picker-close">Fechar</button></fieldset></details>
+<div hidden><input id="guest-count" value="2"><output id="guest-adults">2</output><output id="guest-children">0</output><output id="guest-infants">0</output></div>
                         </div>
                     </div>
                         </div>
-                        <!-- Comparação Lado a Lado -->
-                        <div class="space-y-3 text-sm">
-                            <div class="flex items-center justify-between text-stone-400">
-                                <span>Diárias (<span id="calc-nights">2</span>x R$ 600)</span>
-                                <span class="text-stone-200" id="calc-base-price">R$ 1.200,00</span>
-                            </div>
-                            <div class="flex items-center justify-between text-stone-400">
-                                <span>Taxa de Limpeza e Higienização</span>
-                                <span class="text-stone-200">R$ 150,00</span>
-                            </div>
-
-                            <!-- Comparação direta com o Airbnb -->
-                            <div class="p-3.5 rounded-xl bg-stone-800/80 border border-stone-700/80 space-y-2 mt-4">
-                                <div class="flex items-center justify-between text-xs text-rose-300/90">
-                                    <span class="flex items-center gap-1">
-                                        <i data-lucide="info" class="w-3.5 h-3.5"></i> No Airbnb (diária de R$ 666):
-                                    </span>
-                                    <span class="line-through font-mono" id="airbnb-estimate-price">R$ 1.482,00</span>
-                                </div>
-                                <div class="flex items-center justify-between text-xs text-emerald-400 font-bold">
-                                    <span>Economia direta no seu bolso:</span>
-                                    <span id="savings-price" class="bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/40">R$ 132,00</span>
-                                </div>
-                            </div>
-
-                            <!-- Total Final -->
-                            <div class="pt-4 border-t border-stone-700/80 flex items-baseline justify-between">
-                                <div>
-                                    <span class="text-xs uppercase text-stone-400 font-semibold block">Total Direto com Proprietário</span>
-                                </div>
-                                <span class="text-3xl font-bold text-white tracking-tight" id="direct-total-price">
-                                    R$ 0,50
-                                </span>
-                            </div>
+                        <div class="space-y-3 pt-1" aria-live="polite">
+                            <div class="flex items-center justify-between gap-3"><span class="text-sm text-stone-200">Total direto com o proprietário</span><strong id="direct-total-price" class="text-2xl text-white whitespace-nowrap">R$ 0,50</strong></div>
+                            <div class="rounded-xl bg-white/5 border border-white/10 p-3 space-y-2 text-sm"><div class="flex items-center justify-between gap-3 text-stone-300"><span>No Airbnb</span><span id="airbnb-estimate-price" class="line-through whitespace-nowrap">R$ 1.482,00</span></div><div class="flex items-center justify-between gap-3 text-emerald-300"><span>Diferença com o Airbnb</span><strong id="savings-price" class="whitespace-nowrap">R$ 1.481,50</strong></div></div>
                         </div>
 
                         <!-- CTA Principal: Checkout Autônomo com Mercado Pago -->
@@ -519,16 +478,7 @@
                         </div>
                     </div>
 
-                    <!-- Garantia de Sincronização iCal -->
-                    <div class="bg-white p-5 rounded-2xl border border-stone-200/80 flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
-                            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
-                        </div>
-                        <div class="text-xs">
-                            <span class="font-bold text-stone-800 block text-sm">Confirme a disponibilidade</span>
-                            <span id="availability-note" class="text-stone-500">Consultando disponibilidade…</span>
-                        </div>
-                    </div>
+                    <span id="availability-note" hidden></span>
                 </div>
 </div></div></aside></div>
 
@@ -815,13 +765,17 @@
             const checkoutInput = document.getElementById('checkout-date');
             const guestSelect = document.getElementById('guest-count');
 
-            const today = new Date();
+            function getBookingToday() {
+                return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+            }
+            const today = new Date(getBookingToday() + 'T12:00:00');
             const nextFriday = new Date(today);
             nextFriday.setDate(today.getDate() + ((7 - today.getDay() + 5) % 7 || 7));
             const nextSunday = new Date(nextFriday);
             nextSunday.setDate(nextFriday.getDate() + 2);
 
             if (checkinInput && checkoutInput) {
+                checkinInput.min = getBookingToday();
                 checkinInput.value = nextFriday.toISOString().split('T')[0];
                 checkoutInput.value = nextSunday.toISOString().split('T')[0];
             }
@@ -834,7 +788,33 @@
 
             // Disponibilidade confirmada manualmente pelo anfitrião.
             let blockedDates = [];
-            window.addEventListener("eco-availability", () => { blockedDates = window.ecoBlockedDates || []; renderVisualCalendar(); });
+            let availabilityReady = false;
+            let dateSelectionTarget = null;
+            function validateBookingDates() {
+                const start = checkinInput.value, end = checkoutInput.value;
+                let error = !availabilityReady ? 'Aguarde a atualização da disponibilidade.' : '';
+                if (!error && (!start || !end)) error = 'Selecione check-in e check-out no calendário.';
+                if (!error && (start < getBookingToday() || (Date.parse(end) - Date.parse(start)) / 86400000 < 2)) error = 'Escolha uma estadia futura de pelo menos 2 diárias.';
+                if (!error && blockedDates.some(day => day >= start && day < end)) error = 'Esse período contém uma data indisponível. Escolha outro período no calendário.';
+                checkinInput.setCustomValidity(error); checkoutInput.setCustomValidity(error);
+                const notice = document.getElementById('booking-dates-error'); if (notice) { notice.textContent = error; notice.hidden = !error; }
+                const button = document.getElementById('btn-pix-checkout'); if (button) button.disabled = !!error;
+                return !error;
+            }
+            window.validateBookingDates = validateBookingDates;
+            window.addEventListener('eco-availability', () => { blockedDates = window.ecoBlockedDates || []; availabilityReady = true; validateBookingDates(); renderVisualCalendar(); });
+            window.addEventListener('eco-availability-error', () => { availabilityReady = false; validateBookingDates(); });
+            for (const [input, target] of [[checkinInput, 'checkin'], [checkoutInput, 'checkout']]) {
+                const openCalendar = () => {
+                    dateSelectionTarget = target === 'checkout' && !checkinInput.value ? 'checkin' : target;
+                    if (checkinInput.value) { const parts = checkinInput.value.split('-'); viewYear = Number(parts[0]); viewMonth = Number(parts[1]) - 1; }
+                    renderVisualCalendar();
+                    document.getElementById('calendar-selection-status').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    document.getElementById('calendar-days-grid').querySelector('button:not(:disabled)')?.focus({ preventScroll: true });
+                };
+                input.addEventListener('click', openCalendar);
+                input.addEventListener('keydown', event => { if (['Enter', ' '].includes(event.key)) { event.preventDefault(); openCalendar(); } });
+            }
 
             const monthNames = [
                 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -848,10 +828,14 @@
 
                 titleEl.textContent = `${monthNames[viewMonth]} ${viewYear}`;
                 gridEl.innerHTML = '';
+                const hint = document.getElementById('calendar-selection-status');
+                if (hint) hint.textContent = !availabilityReady ? 'Atualizando disponibilidade…' : dateSelectionTarget === 'checkout' ? 'Escolha a saída ou outro dia livre para mudar a entrada.' : checkinInput.value && checkoutInput.value ? 'Período selecionado. Clique em outro dia para escolher novas datas.' : 'Escolha a entrada (mínimo de 2 diárias).';
 
                 const firstDayIndex = new Date(viewYear, viewMonth, 1).getDay();
                 const totalDays = new Date(viewYear, viewMonth + 1, 0).getDate();
 
+                const minimumDate = getBookingToday();
+                if (checkinInput) checkinInput.min = minimumDate;
                 const cInVal = checkinInput ? checkinInput.value : '';
                 const cOutVal = checkoutInput ? checkoutInput.value : '';
 
@@ -873,36 +857,39 @@
                     cell.textContent = day;
                     cell.className = 'py-2 rounded-xl text-xs font-medium transition flex items-center justify-center relative ';
 
-                    const tooSoon = cInVal && !cOutVal && dateStr > cInVal && (Date.parse(dateStr) - Date.parse(cInVal)) / 86400000 < 2;
-                    const isBlocked = blockedDates.includes(dateStr) || tooSoon;
+                    const choosingCheckout = dateSelectionTarget === 'checkout' || (dateSelectionTarget !== 'checkin' && cInVal && !cOutVal);
+                    const distance = cInVal ? (Date.parse(dateStr) - Date.parse(cInVal)) / 86400000 : 0;
+                    const followingNight = new Date(Date.parse(dateStr) + 86400000).toISOString().slice(0, 10);
+                    const isPast = dateStr < minimumDate;
+                    const occupied = blockedDates.includes(dateStr);
+                    const canStart = !occupied && !blockedDates.includes(followingNight);
+                    const canEnd = choosingCheckout && cInVal && distance >= 2 && distance <= 30 && !blockedDates.some(day => day >= cInVal && day < dateStr);
+                    const tooSoon = choosingCheckout && distance > 0 && distance < 2;
+                    const isBlocked = !availabilityReady || isPast || (!canEnd && (!canStart || tooSoon));
                     cell.disabled = !!isBlocked;
                     const isCheckin = dateStr === cInVal;
                     const isCheckout = dateStr === cOutVal;
                     const isInRange = cInVal && cOutVal && dateStr > cInVal && dateStr < cOutVal;
 
-                    if (isBlocked) {
+                    cell.setAttribute('aria-label', dateStr.split('-').reverse().join('/') + (isCheckin ? ': entrada selecionada' : isCheckout ? ': saída selecionada' : isBlocked ? ': indisponível' : canEnd ? ': escolher saída' : ': escolher entrada'));
+                    cell.setAttribute('aria-pressed', String(isCheckin || isCheckout));
+                    if ((isCheckin || isCheckout) && !isPast) {
+                        cell.className += 'bg-forest-900 text-white font-bold rounded-full shadow-sm';
+                    } else if (isBlocked) {
                         cell.className += 'bg-stone-200 text-stone-400 line-through cursor-not-allowed opacity-60';
-                        cell.title = tooSoon ? 'Estadia mínima de 2 diárias' : 'Data ocupada';
-                    } else if (isCheckin || isCheckout) {
-                        cell.className += 'bg-emerald-600 text-white font-bold shadow-md scale-105';
                     } else if (isInRange) {
-                        cell.className += 'bg-emerald-100 text-emerald-900 font-semibold';
+                        cell.className += 'bg-stone-100 text-forest-900 rounded-none';
                     } else {
-                        cell.className += 'bg-white hover:bg-emerald-50 text-stone-800 border border-stone-200/60';
+                        cell.className += 'bg-white hover:bg-stone-100 text-stone-800 border border-stone-200/60 rounded-full';
                     }
+                    cell.title = isPast ? 'Data passada — indisponível' : !availabilityReady ? 'Atualizando disponibilidade' : canEnd ? 'Selecionar check-out' : isBlocked ? occupied ? 'Data ocupada' : 'Estadia mínima de 2 diárias' : 'Selecionar check-in';
 
                     if (!isBlocked) {
                         cell.addEventListener('click', () => {
-                            if (!cInVal || (cInVal && cOutVal)) {
-                                checkinInput.value = dateStr;
-                                checkoutInput.value = '';
-                            } else if (cInVal && !cOutVal) {
-                                if (dateStr > cInVal) {
-                                    checkoutInput.value = dateStr;
-                                } else {
-                                    checkinInput.value = dateStr;
-                                    checkoutInput.value = '';
-                                }
+                            if (canEnd) {
+                                checkoutInput.value = dateStr; dateSelectionTarget = null;
+                            } else {
+                                checkinInput.value = dateStr; checkoutInput.value = ''; dateSelectionTarget = 'checkout';
                             }
                             calculate();
                             renderVisualCalendar();
@@ -913,6 +900,10 @@
                 }
             }
 
+            document.getElementById('calendar-clear-dates')?.addEventListener('click', () => {
+                checkinInput.value = ''; checkoutInput.value = ''; dateSelectionTarget = 'checkin';
+                calculate(); renderVisualCalendar();
+            });
             document.getElementById('cal-prev-month')?.addEventListener('click', () => {
                 viewMonth--;
                 if (viewMonth < 0) { viewMonth = 11; viewYear--; }
@@ -935,6 +926,8 @@
             function calculate() {
                 if (!checkinInput || !checkoutInput) return;
 
+                checkinInput.min = getBookingToday();
+                if (checkinInput.value && checkinInput.value < checkinInput.min) checkinInput.value = checkinInput.min;
                 if (checkinInput.value) {
                     const earliest = new Date(Date.parse(checkinInput.value + 'T00:00:00Z') + 2 * 86400000).toISOString().slice(0, 10);
                     checkoutInput.min = earliest;
@@ -946,20 +939,16 @@
                 let nights = Math.round((cOut - cIn) / (1000 * 60 * 60 * 24));
                 if (isNaN(nights) || nights < 2) nights = 2;
 
+                validateBookingDates();
                 const baseLodging = nights * DAILY_RATE;
                 const subtotalDirect = baseLodging + CLEANING_FEE;
                 const totalDirect = 0.50; // Total temporário igual ao servidor.
 
                 const airbnbTotal = nights * AIRBNB_DAILY_RATE + CLEANING_FEE;
-                const savings = airbnbTotal - subtotalDirect;
-
-                document.getElementById('night-count-badge').textContent = `${nights} Diária${nights > 1 ? 's' : ''}`;
-                document.getElementById('calc-nights').textContent = nights;
-                document.getElementById('calc-base-price').textContent = formatBRL(baseLodging);
-
-                document.getElementById('airbnb-estimate-price').textContent = formatBRL(airbnbTotal);
-                document.getElementById('savings-price').textContent = `Economia de ${formatBRL(savings)}`;
+                const savings = airbnbTotal - totalDirect;
                 document.getElementById('direct-total-price').textContent = formatBRL(totalDirect);
+                document.getElementById('airbnb-estimate-price').textContent = formatBRL(airbnbTotal);
+                document.getElementById('savings-price').textContent = formatBRL(savings);
 
                 return {
                     nights,
